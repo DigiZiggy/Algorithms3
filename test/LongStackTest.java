@@ -47,12 +47,12 @@ public class LongStackTest {
       tt = m.pop();
       assertTrue ("2147483649 + 2147483648 must be 4294967297; ",
          tt==4294967297L); 
-//      m.push (5);
-//      m.push (3);
-//      m.op ("-");
-//      tt = m.pop();
-//      assertTrue ("5 - 3 must be 2; ", tt==2);
-//      assertTrue ("push push op pop must not grow the stack; ", m.stEmpty());
+      m.push (5);
+      m.push (3);
+      m.op ("-");
+      tt = m.pop();
+      assertTrue ("5 - 3 must be 2; ", tt==2);
+      assertTrue ("push push op pop must not grow the stack; ", m.stEmpty());
       m.push (5);
       m.push (3);
       m.op ("*");
@@ -121,9 +121,14 @@ public class LongStackTest {
       m1.push (5);
       m1.push (4);
       LongStack m2 = null;
+      System.out.println(m1);
+      System.out.println(m2);
       try {
          m2 = (LongStack)m1.clone();
       } catch (CloneNotSupportedException e) {};
+      System.out.println(m1);
+      System.out.println(m2);
+
       assertNotSame ("clone must differ from original;", m2, m1);
       assertEquals ("clone must be equal to original;", m2, m1);
       m1.pop();

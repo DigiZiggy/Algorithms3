@@ -36,7 +36,14 @@ public class LongStack {
 
    @Override
    public Object clone() throws CloneNotSupportedException {
-       return super.clone();
+       if (this.stack == null) {
+           stack = new ArrayList<Long>();
+           return null;
+       }
+       LongStack.super.clone();
+ //      LongStack result = (LongStack) super.clone();
+
+       return LongStack.super.clone();
    }
 
    public boolean stEmpty() {
@@ -79,24 +86,52 @@ public class LongStack {
 
    @Override
    public boolean equals (Object o) {
-       if (((LongStack)o).top_of_stack != top_of_stack)
-           return false;
-       if (stEmpty())
-           return true; // teine ka tyhi!
-       for (int i=0; i<=top_of_stack; i++)
-           if (((LongStack) o).stack.get(i) != stack.get(i))
-               return false;
-       return true;
+       return o instanceof LongStack && stack.equals(((LongStack)o).stack);
    }
+
 
    @Override
    public String toString() {
        return stack.toString();
    }
 
-   public static long interpret (String pol) {
+    private static String cleanExpr(String expr){
+        //remove all non-operators, non-whitespace, and non digit chars
+        return expr.replaceAll("[^\\^\\*\\+\\-\\d/\\s]", "");
+    }
 
-      return 0; // TODO!!! Your code here!
+   public static long interpret (String pol) {
+       String cleanExpr = cleanExpr(pol);
+       LinkedList<Long> stack = new LinkedList<Long>();
+       for(String token:cleanExpr.split("\\s")){
+           Long tokenNum = null;
+           try{
+               tokenNum = Long.parseLong(token);
+           }catch(NumberFormatException e){}
+           if(tokenNum != null){
+               stack.push(Long.parseLong(token+""));
+           }else if(token.equals("*")){
+               long op2 = stack.pop();
+               long op1 = stack.pop();
+               stack.push(op1 * op2);
+           }else if(token.equals("/")){
+               long op2 = stack.pop();
+               long op1 = stack.pop();
+               stack.push(op1 / op2);
+           }else if(token.equals("-")){
+               long op2 = stack.pop();
+               long op1 = stack.pop();
+               stack.push(op1 - op2);
+           }else if(token.equals("+")){
+               long op2 = stack.pop();
+               long op1 = stack.pop();
+               stack.push(op1 + op2);
+           }else{//just in case
+               System.out.println("Error");
+           }
+       }
+       System.out.println("Final answer: " + stack.pop());
+       return stack.pop();
    }
 
 }
