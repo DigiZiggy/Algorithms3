@@ -159,10 +159,13 @@ public class LongStackTest {
    @Test (timeout=1000)
    public void testInterpret() {
       String s = "1";
+
       assertEquals ("expression: " + s, 1, LongStack.interpret (s));
       s = "2 5 -";
+
       assertEquals ("expression: " + s, -3, LongStack.interpret (s));
       s = "35 10 -3 + /";
+
       assertEquals ("expression: " + s, 5, LongStack.interpret (s));
    }
 
@@ -221,7 +224,7 @@ public class LongStackTest {
    @Test (timeout=1000)
    public void testInterpretTokenizer() {
       String s = "1  2    +";
-      assertEquals ("expression: " + Aout.toString (s), 3, 
+      assertEquals ("expression: " + Aout.toString (s), 3,
          LongStack.interpret (s));
       s = "   \t \t356  \t \t";
       assertEquals ("expression: " + Aout.toString (s), 356,
