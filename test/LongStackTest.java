@@ -121,13 +121,10 @@ public class LongStackTest {
       m1.push (5);
       m1.push (4);
       LongStack m2 = null;
-      System.out.println(m1);
-      System.out.println(m2);
       try {
          m2 = (LongStack)m1.clone();
       } catch (CloneNotSupportedException e) {};
-      System.out.println(m1);
-      System.out.println(m2);
+
 
       assertNotSame ("clone must differ from original;", m2, m1);
       assertEquals ("clone must be equal to original;", m2, m1);

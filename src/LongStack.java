@@ -1,10 +1,9 @@
 import java.util.*;
 
+
 public class LongStack {
 
     private ArrayList<Long> stack;
-    private ArrayList<Long> clone_of_stack;
-    private int top_of_stack;
 
 
    public static void main (String[] argum) {
@@ -14,23 +13,20 @@ public class LongStack {
    LongStack() {
        stack = new ArrayList<Long>();
        this.stack = stack;
-       top_of_stack = -1;
    }
 
    @Override
    public Object clone() throws CloneNotSupportedException {
-       if (this.stack == null) {
-           stack = new ArrayList<Long>();
-           return null;
-       }
-       LongStack.super.clone();
- //      LongStack result = (LongStack) super.clone();
+       //creating new longstack
+       LongStack clone = new LongStack();
+       //assigning clone of original stack to this new longstack stack object
+       clone.stack = (ArrayList<Long>) stack.clone();
 
-       return LongStack.super.clone();
+       return clone;
    }
 
    public boolean stEmpty() {
-       return (top_of_stack == -1);
+       return ((stack.size()-1) == -1);
    }
 
    public void push (long a) {
@@ -80,9 +76,9 @@ public class LongStack {
 
 
    public static long interpret (String pol) {
-       Stack<Long> stack = new Stack<>();
+       LongStack stack = new LongStack();
 
-       for (String token : pol.split("\\s+")) {
+       for (String token : pol.trim().split("\\s+")) {
            switch (token) {
                case "+":
                    stack.push(stack.pop() + stack.pop());
@@ -102,7 +98,7 @@ public class LongStack {
                    break;
            }
        }
-       if (stack.size() == 1) {
+       if (stack.stack.size() == 1) {
            return stack.pop();
        } else {
            throw new RuntimeException();
