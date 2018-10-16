@@ -10,8 +10,9 @@ public class LongStack {
        LongStack m = new LongStack();
        m.push (4);
        m.push (5);
-       m.op ("#");
+      // m.op ("#");
        m.tos();
+       System.out.println(interpret("20 / 2 * 5"));
    }
 
    LongStack() {
@@ -38,9 +39,7 @@ public class LongStack {
    public long pop() {
        if (stack.size() == 0)
        {
-           throw new IndexOutOfBoundsException("Your stack has run empty " +
-                   "or has too many operators for the amount of numbers " +
-                   "or operator entered before any numbers in stack!");
+           throw new IndexOutOfBoundsException("Your stack has run empty!");
        }
         else
        {
@@ -54,23 +53,18 @@ public class LongStack {
            long op1 = pop();
            switch (s) {
                case "+":
-                   System.out.println("Removing " + op1 + " and " + op2 + " from stack, adding them up, inserting new value into stack");
                    push(op1 + op2);
                    break;
                case "-":
-                   System.out.println("Removing " + op1 + " and " + op2 + " from stack, deleting one from another, inserting new value into stack");
                    push(op1 - op2);
                    break;
                case "*":
-                   System.out.println("Removing " + op1 + " and " + op2 + " from stack, multiplying them, inserting new value into stack");
                    push(op1 * op2);
                    break;
                case "/":
-                   System.out.println("Removing " + op1 + " and " + op2 + " from stack, adding them up, inserting new value into stack");
                    push(op1 / op2);
                    break;
                default:
-                   System.out.println("Invalid symbol " + s + " entered!");
                    throw new NumberFormatException("Invalid symbol " + s + " entered!");
            }
        } else {
@@ -104,32 +98,23 @@ public class LongStack {
 
 
    public static long interpret (String pol) {
-       if (pol.length() == 0) {
+       if (pol.trim().length() == 0) {
            throw new RuntimeException("Input string is empty! Not possible to interpret.");
+       } else if (pol.trim().length() == 1) {
+           return Long.parseLong(pol.trim());
        } else {
            LongStack stack = new LongStack();
            System.out.println("Calculating input: " + pol);
            for (String token : pol.trim().split("\\s+")) {
-               switch (token) {
-                   case "+":
-                       stack.op("+");
-                       break;
-                   case "-":
-                       stack.op("-");
-                       break;
-                   case "*":
-                       stack.op("*");
-                       break;
-                   case "/":
-                       stack.op("/");
-                       break;
-                   default:
-                       try {
-                           stack.push(Long.parseLong(token));
-                       } catch (NumberFormatException e) {
-                           throw new NumberFormatException("Invalid symbol " + token + " entered!");
-                       }
-                       break;
+               System.out.println(token);
+               try {
+                   stack.push(Long.parseLong(token));
+               } catch (NumberFormatException e) {
+                   try {
+                       stack.op(token);
+                   } catch (NumberFormatException d) {
+                       throw new NumberFormatException("Invalid symbol " + token + " entered in string " + pol);
+                   }
                }
            }
            if (stack.stack.size() == 1) {
@@ -138,16 +123,7 @@ public class LongStack {
                return answer;
 
            } else {
-               LongStack overflow = new LongStack();
-
-               for (int num = 0; num < stack.stack.size(); num++) {
-                   overflow.push(stack.stack.get(num));
-               }
-               throw new RuntimeException("Not enough operators for the amount of numbers entered or " +
-                       "not enough numbers in order to do the operations entered. Elements "
-                       + overflow + " are left over from the input [" + pol +
-                       "] hence calculation is impossible!");
-
+               throw new RuntimeException("Not enough operators in the stack to do the operation from the input " + pol);
            }
        }
    }
