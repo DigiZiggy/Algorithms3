@@ -12,7 +12,7 @@ public class LongStack {
        m.push (5);
       // m.op ("#");
        m.tos();
-       System.out.println(interpret("20 / 2 * 5"));
+       System.out.println(interpret("-23 / 2 * 5"));
    }
 
    LongStack() {
@@ -68,7 +68,7 @@ public class LongStack {
                    throw new NumberFormatException("Invalid symbol " + s + " entered!");
            }
        } else {
-       throw new IllegalArgumentException("Not enough numbers in stack to do the operation!");
+       throw new IllegalArgumentException("Not enough numbers in stack to do the operation " + s + " !");
        }
 
    }
@@ -112,7 +112,7 @@ public class LongStack {
                } catch (NumberFormatException e) {
                    try {
                        stack.op(token);
-                   } catch (NumberFormatException d) {
+                   } catch (IllegalArgumentException d) {
                        throw new NumberFormatException("Invalid symbol " + token + " entered in string " + pol);
                    }
                }
